@@ -1,0 +1,5 @@
+name = "spacegame"
+pages_build_output_dir = "." 
+[vars]
+SUPABASE_URL = "https://owumeapuikjwwyvynxkb.supabase.co"
+SUPABASE_KEY = ""eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im93dW1lYXB1aWtqd3d5dnlueGtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMjkyMDgsImV4cCI6MjA5MTcwNTIwOH0.GRLteNveKNm2Yto9fPCOqvRjQGePrMOBn1dn1SaQCTA
