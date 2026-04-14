@@ -467,8 +467,7 @@ async endGame(win) {
         hp: this.player.hp,
         play_time: timeSpent
     };
-
-    const WORKER_URL = 'https://gamespace.karry561.workers.dev/'; // 替換為你的 Google Apps Script URL
+    
     try {
         const response = await fetch('/score', {
             method: 'POST',

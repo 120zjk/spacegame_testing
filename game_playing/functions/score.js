@@ -1,8 +1,6 @@
-// /functions/score.js
 export async function onRequestPost(context) {
     const { env, request } = context;
-
-    // 1. 設定 CORS (讓你的網頁可以跨域請求)
+    
     const corsHeaders = {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -10,20 +8,16 @@ export async function onRequestPost(context) {
     };
 
     try {
-        // 2. 獲取遊戲傳來的數據
         const stats = await request.json();
         
-        // 這裡將數據格式化為對應 Supabase 表格的欄位
-        // 根據你的描述，欄位名稱為 id, fragments, hp, play_time
+        // 確保 payload 的 key 與你 Supabase 的欄位名一致
         const payload = {
-            id: stats.id,
+            id: stats.id,          // 你提到 Supabase 裡是 id
             fragments: stats.fragments,
             hp: stats.hp,
             play_time: stats.play_time
         };
 
-        // 3. 轉發給 Supabase
-        // 注意：這裡的 /rest/v1/spacegame 對應的是你在 Supabase 的 Table 名稱
         const res = await fetch(`${env.SUPABASE_URL}/rest/v1/spacegame`, {
             method: 'POST',
             headers: {
@@ -35,20 +29,21 @@ export async function onRequestPost(context) {
             body: JSON.stringify(payload)
         });
 
+        // 返回 Supabase 的結果
         return new Response(JSON.stringify({ success: res.ok }), {
+            status: res.status,
             headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
 
     } catch (error) {
-        console.error('Error:', error);
         return new Response(JSON.stringify({ error: error.message }), {
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-            status: 500
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
     }
-} // <-- 這裡補回了 onRequestPost 的結束括號
+}
 
-// 處理 OPTIONS 請求（瀏覽器必備，解決 CORS 預檢問題）
+// 必須保留這個，否則跨域請求會失敗
 export async function onRequestOptions() {
     return new Response(null, {
         headers: {
