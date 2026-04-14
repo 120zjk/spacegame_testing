@@ -1,3 +1,4 @@
+// /functions/score.js
 export async function onRequestPost(context) {
     const { env, request } = context;
     
@@ -10,14 +11,15 @@ export async function onRequestPost(context) {
     try {
         const stats = await request.json();
         
-        // 確保 payload 的 key 與你 Supabase 的欄位名一致
+        // 根據您的需求，將數據映射到 Supabase 欄位
         const payload = {
-            id: stats.id,          // 你提到 Supabase 裡是 id
+            id: stats.id,
             fragments: stats.fragments,
             hp: stats.hp,
             play_time: stats.play_time
         };
 
+        // 轉發給 Supabase，請確保後台已設定 SUPABASE_URL 和 SUPABASE_KEY
         const res = await fetch(`${env.SUPABASE_URL}/rest/v1/spacegame`, {
             method: 'POST',
             headers: {
@@ -29,21 +31,18 @@ export async function onRequestPost(context) {
             body: JSON.stringify(payload)
         });
 
-        // 返回 Supabase 的結果
         return new Response(JSON.stringify({ success: res.ok }), {
-            status: res.status,
             headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
 
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: { ...corsHeaders, "Content-Type": "application/json" }
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 500
         });
     }
 }
 
-// 必須保留這個，否則跨域請求會失敗
 export async function onRequestOptions() {
     return new Response(null, {
         headers: {
