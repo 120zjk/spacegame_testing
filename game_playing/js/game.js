@@ -467,9 +467,8 @@ async endGame(win) {
         hp: this.player.hp,
         play_time: timeSpent
     };
-    const WORKER_URL = 'https://spacegame1.karry561.workers.dev';
     try {
-       const response = await fetch(WORKER_URL, { // 直接發送到 Worker 根目錄
+       const response = await fetch('/score', { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(stats)
